@@ -12,7 +12,11 @@ export TPP_WORKSPACE=code
 export TPP_REPO=$HOME/competitive-programming
 export TPP_GITHUB=https://github.com/Kleiber/competitive-programming.git
 export TPP_BRANCH=master
+
 export TPP_IDE=vi
+export TPP_TEST=1
+export TPP_VIEWS=1
+export TPP_FILL=1
 
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'

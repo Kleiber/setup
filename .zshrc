@@ -11,11 +11,15 @@ export PATH=$PATH:$HOME/robotaia:
 export PATH=$PATH:$HOME/scripts:
 export PATH=$PATH:$GOPATH/bin/bin:
 
-export TPP_WORKSPACE=code
+export TPP_WORKSPACE=${HOME}/code
 export TPP_REPO=$HOME/competitive-programming
 export TPP_GITHUB=https://github.com/Kleiber/competitive-programming.git
 export TPP_BRANCH=master
+
 export TPP_IDE=vi
+export TPP_TEST=1
+export TPP_VIEWS=1
+export TPP_FILL=1
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
