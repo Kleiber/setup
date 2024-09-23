@@ -306,6 +306,11 @@
             height: 20px;
         }
 
+        .carousel-message {
+            font-family: 'Indie Flower', cursive;
+            font-size: 6vw;
+        }
+
         .carousel-indicator {
             display: inline-block;
             width: 10px;
@@ -443,6 +448,7 @@
                     <a class="carousel-next" href="#" aria-label="Siguiente foto">&#10095;</a>
                 </div>
                 <div class="carousel-indicators" id="carousel-indicators"></div>
+                <div id="carousel-message" class="carousel-message"></div>
             </div>
             <div id="finalMessage" class="message">
                 <h1>Te Amo!</h1>
@@ -460,11 +466,11 @@
         const audio = document.getElementById('audio');
 
         const messages = [
-            { element: document.getElementById('anniversaryMessage'), duration: 3000, confetti: true },
-            { element: document.getElementById('introductionMessage'), duration: 3000, confetti: true },
-            { element: document.getElementById('mainMessage'), duration: 3000, confetti: true },
-            { element: document.getElementById('photoGallery'), duration: 50000, confetti: true },
-            { element: document.getElementById('finalMessage'), duration: 3000, confetti: true }
+            { element: document.getElementById('anniversaryMessage'), duration: 5000, confetti: true },
+            { element: document.getElementById('introductionMessage'), duration: 5000, confetti: true },
+            { element: document.getElementById('mainMessage'), duration: 5000, confetti: true },
+            { element: document.getElementById('photoGallery'), duration: 100000, confetti: true },
+            { element: document.getElementById('finalMessage'), duration: 5000, confetti: true }
         ];
 
         let confettiInterval;
@@ -584,6 +590,14 @@
             "fotos/foto5.jpeg",
         ];
 
+        const imageMessages = [
+            "Our first date. I was so nervous, but your smile put me at ease instantly.",
+            "Remember this sunset? It was the moment I realized I was falling in love with you.",
+            "Our first vacation together. I've never laughed so much in my life!",
+            "The day we moved in together. It was chaotic, but it felt so right.",
+            "Last New Year's Eve. Here's to many more years of celebration and love.",
+        ];
+
         let slideIndex = 0;
         let slides;
         let indicators;
@@ -623,6 +637,9 @@
             }
             slides[slideIndex].style.display = "flex";
             indicators[slideIndex].classList.add("active");
+
+            // Update the carousel message
+            document.getElementById('carousel-message').innerHTML = `<p>${imageMessages[slideIndex]}</p>`;
         }
 
         function changeSlide(n) {
