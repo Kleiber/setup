@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Countdown Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Indie+Flower&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #d81b60;
+            --accent-color: #ff4081;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --light-text: #fff;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
             overflow: hidden;
         }
+
         .layer {
             position: absolute;
             top: 0;
@@ -26,95 +34,130 @@
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
             pointer-events: none;
+            transform: scale(0.95);
         }
+
         .layer.active {
             opacity: 1;
             z-index: 10;
             pointer-events: auto;
+            transform: scale(1);
         }
+
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #messageLayer .content-container > div {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #messageLayer .content-container > div.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         #countdown {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 90vw;
             height: 50vh;
-            position: relative;
-            z-index: 1;
         }
+
         .time-unit {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0 1vw;
         }
+
         .time-value {
-            font-size: 8vw;
+            font-size: 6vw;
             font-weight: 700;
             line-height: 1;
-            width: 18vw;
-            height: 18vw;
+            width: 15vw;
+            height: 15vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffffff;
-            color: #333333;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
+
         .time-value:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
+
         .time-label {
-            font-size: 1.2vw;
-            font-weight: 400;
+            font-size: 1.5vw;
+            font-weight: 500;
             text-transform: uppercase;
             margin-top: 1vw;
-            color: #4a4a4a;
-            letter-spacing: 0.15em;
+            color: var(--primary-color);
+            letter-spacing: 0.1em;
             text-align: center;
             padding: 0.5vw 1vw;
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
             transition: all 0.3s ease;
         }
+
         .time-unit:hover .time-label {
-            background-color: rgba(255, 255, 255, 0.9);
-            transform: translateY(5px);
+            background-color: rgba(255, 255, 255, 1);
+            transform: translateY(3px);
         }
+
         #playButton {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background-color: #b2090e;
+            background-color: var(--accent-color);
             display: none;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
         }
+
         #playButton:hover {
-            background-color: #b2090e;
-            transform: translate(-50%, -50%) scale(1.05);
+            background-color: var(--primary-color);
+            transform: translate(-50%, -50%) scale(1.1);
         }
+
         #playButton::after {
             content: '';
             width: 0;
             height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 30px solid white;
-            margin-left: 5px;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            border-left: 40px solid white;
+            margin-left: 10px;
         }
+
         #confettiCanvas {
             position: fixed;
             top: 0;
@@ -124,25 +167,31 @@
             pointer-events: none;
             z-index: 1000;
         }
+
         .message {
             text-align: center;
-            z-index: 3;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+            margin: 0 auto;
         }
+
         h1 {
             margin: 0;
-            font-size: 3vw;
-            color: #333;
+            font-size: 4vw;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .letter-container {
             perspective: 1000px;
             width: 80%;
             max-width: 800px;
             padding: 30px;
         }
+
         .letter {
             font-family: 'Indie Flower', cursive;
             background-color: #f9f2e3;
@@ -153,39 +202,131 @@
                 0 4px 4px rgba(0,0,0,0.15),
                 0 8px 8px rgba(0,0,0,0.15);
             position: relative;
-            transform: rotate(-3deg);
+            transform: rotate(-2deg);
             transition: transform 0.3s ease;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            line-height: 1.6;
         }
+
         .letter:hover {
             transform: rotate(0deg);
         }
+
         .letter::before {
             content: '';
             position: absolute;
             inset: 0;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
             pointer-events: none;
         }
+
         .header {
             text-align: right;
             margin-bottom: 40px;
         }
+
         .date {
             font-style: italic;
             color: #5a5a5a;
             font-size: 1.1em;
         }
+
         .greeting, .closing {
             font-weight: bold;
-            font-size: 1.3em;
+            font-size: 1.4em;
+            color: var(--primary-color);
         }
+
         .signature {
             margin-top: 40px;
             text-align: right;
             font-style: italic;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            color: var(--primary-color);
         }
+
+        #photoGallery {
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fade 0.5s ease-in-out;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .carousel-prev, .carousel-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(63, 81, 181, 0.7);
+            color: var(--light-text);
+            padding: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .carousel-prev:hover, .carousel-next:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-prev { left: 10px; }
+        .carousel-next { right: 10px; }
+
+        .carousel-indicators {
+            text-align: center;
+            margin-top: 10px;
+            height: 20px;
+        }
+
+        .carousel-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        @keyframes fade {
+            from {opacity: 0.4}
+            to {opacity: 1}
+        }
+
         @media (max-width: 768px) {
             .letter-container {
                 width: 95%;
@@ -195,58 +336,117 @@
                 padding: 30px;
                 font-size: 1em;
             }
+            .message {
+                padding: 20px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 7vw;
+            }
+            .time-value {
+                font-size: 8vw;
+                width: 18vw;
+                height: 18vw;
+            }
+            .time-label {
+                font-size: 2.5vw;
+            }
+            #playButton {
+                width: 100px;
+                height: 100px;
+            }
+            #playButton::after {
+                border-top: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+                border-left: 30px solid white;
+                margin-left: 8px;
+            }
+
+            .carousel-prev { left: 10px; }
+            .carousel-next { right: 10px; }
+
+            #photoGallery {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .carousel-container {
+                height: calc(70vh - 50px);
+            }
+
+            .carousel-prev, .carousel-next {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .carousel-indicator {
+                width: 8px;
+                height: 8px;
+                margin: 0 4px;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <canvas id="confettiCanvas"></canvas>
+    
     <div id="countdownLayer" class="layer active">
-        <div id="countdown">
-            <div class="time-unit">
-                <div class="time-value" id="days">00</div>
-                <div class="time-label">Dias</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="hours">00</div>
-                <div class="time-label">Horas</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="minutes">00</div>
-                <div class="time-label">Min</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="seconds">00</div>
-                <div class="time-label">Seg</div>
-            </div>
-        </div>
-        <div id="playButton"></div>
-    </div>
-    <div id="messageLayer" class="layer">
-        <div id="anniversaryMessage" class="message">
-            <h1>Feliz Aniversario</h1>
-        </div>
-        <div id="introductionMessage" class="message">
-            <h1>Introducción</h1>
-        </div>
-        <div id="mainMessage" class="letter-container">
-            <div class="letter">
-                <div class="header">
-                    <div class="date">September 22, 2024</div>
+        <div class="content-container">
+            <div id="countdown">
+                <div class="time-unit">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-label">Dias</div>
                 </div>
-                <p class="greeting">Dear [Recipient],</p>
-                <p>I hope this letter finds you well. I am writing to express my heartfelt appreciation for your recent support and guidance. Your wisdom and encouragement have been invaluable to me during these challenging times.</p>
-                <p>Your generosity of spirit and willingness to share your expertise have made a significant impact on my personal and professional growth. I am truly grateful for the time and effort you have invested in mentoring me.</p>
-                <p>As I move forward, I will carry the lessons you've taught me and strive to pay forward the kindness you've shown. Your influence will undoubtedly shape my future endeavors and decisions.</p>
-                <p class="closing">With sincere gratitude,</p>
-                <div class="signature">[Your Name]</div>
+                <div class="time-unit">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">Horas</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">Min</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">Seg</div>
+                </div>
             </div>
+            <div id="playButton"></div>
         </div>
-        <div id="photoGallery" class="message">
-            <h1>Fotos</h1>
-        </div>
-        <div id="finalMessage" class="message">
-            <h1>Te Amo!</h1>
+    </div>
+
+    <div id="messageLayer" class="layer">
+        <div class="content-container">
+            <div id="anniversaryMessage" class="message">
+                <h1>Feliz Aniversario</h1>
+            </div>
+            <div id="introductionMessage" class="message">
+                <h1>Introducción</h1>
+            </div>
+            <div id="mainMessage" class="letter-container">
+                <div class="letter">
+                    <div class="header">
+                        <div class="date">September 22, 2024</div>
+                    </div>
+                    <p class="greeting">Dear [Recipient],</p>
+                    <p>I hope this letter finds you well. I am writing to express my heartfelt appreciation for your recent support and guidance. Your wisdom and encouragement have been invaluable to me during these challenging times.</p>
+                    <p>Your generosity of spirit and willingness to share your expertise have made a significant impact on my personal and professional growth. I am truly grateful for the time and effort you have invested in mentoring me.</p>
+                    <p>As I move forward, I will carry the lessons you've taught me and strive to pay forward the kindness you've shown. Your influence will undoubtedly shape my future endeavors and decisions.</p>
+                    <p class="closing">With sincere gratitude,</p>
+                    <div class="signature">[Your Name]</div>
+                </div>
+            </div>
+            <div id="photoGallery">
+                <div class="carousel-container">
+                    <div id="carousel-slides"></div>
+                    <a class="carousel-prev" href="#" aria-label="Foto anterior">&#10094;</a>
+                    <a class="carousel-next" href="#" aria-label="Siguiente foto">&#10095;</a>
+                </div>
+                <div class="carousel-indicators" id="carousel-indicators"></div>
+            </div>
+            <div id="finalMessage" class="message">
+                <h1>Te Amo!</h1>
+            </div>
         </div>
     </div>
 
@@ -261,9 +461,9 @@
 
         const messages = [
             { element: document.getElementById('anniversaryMessage'), duration: 3000, confetti: true },
-            { element: document.getElementById('introductionMessage'), duration: 3000, confetti: false },
+            { element: document.getElementById('introductionMessage'), duration: 3000, confetti: true },
             { element: document.getElementById('mainMessage'), duration: 3000, confetti: true },
-            { element: document.getElementById('photoGallery'), duration: 3000, confetti: false },
+            { element: document.getElementById('photoGallery'), duration: 50000, confetti: true },
             { element: document.getElementById('finalMessage'), duration: 3000, confetti: true }
         ];
 
@@ -290,7 +490,7 @@
                     particleCount,
                     origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
                 }));
-            }, 1000);
+            }, 250);
         }
 
         function stopConfetti() {
@@ -328,7 +528,13 @@
 
         function showMessage(index) {
             messages.forEach((msg, i) => {
-                msg.element.style.display = i === index ? 'block' : 'none';
+                if (i === index) {
+                    msg.element.style.display = 'block';
+                    msg.element.classList.add('active');
+                } else {
+                    msg.element.style.display = 'none';
+                    msg.element.classList.remove('active');
+                }
             });
 
             if (messages[index].confetti) {
@@ -369,6 +575,85 @@
             audio.currentTime = 0;
             audio.play();
         });
+
+        const imageUrls = [
+            "fotos/foto1.jpeg",
+            "fotos/foto2.jpeg",
+            "fotos/foto3.jpeg",
+            "fotos/foto4.jpeg",
+            "fotos/foto5.jpeg",
+        ];
+
+        let slideIndex = 0;
+        let slides;
+        let indicators;
+        let slideInterval;
+
+        function initializeCarousel() {
+            const slidesContainer = document.getElementById('carousel-slides');
+            const indicatorsContainer = document.getElementById('carousel-indicators');
+
+            imageUrls.forEach((url, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `<img src="${url}" alt="Momento Romántico ${index + 1}">`;
+                slidesContainer.appendChild(slide);
+
+                const indicator = document.createElement('span');
+                indicator.className = 'carousel-indicator';
+                indicator.onclick = () => {
+                    stopSlideshow();
+                    showSlide(index);
+                    startSlideshow();
+                };
+                indicatorsContainer.appendChild(indicator);
+            });
+
+            slides = document.getElementsByClassName("carousel-slide");
+            indicators = document.getElementsByClassName("carousel-indicator");
+        }
+
+        function showSlide(n) {
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+                indicators[i].classList.remove("active");
+            }
+            slides[slideIndex].style.display = "flex";
+            indicators[slideIndex].classList.add("active");
+        }
+
+        function changeSlide(n) {
+            showSlide(slideIndex += n);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(() => changeSlide(1), 5000);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        document.querySelector('.carousel-prev').addEventListener('click', function(e) {
+            e.preventDefault();
+            stopSlideshow();
+            changeSlide(-1);
+            startSlideshow();
+        });
+
+        document.querySelector('.carousel-next').addEventListener('click', function(e) {
+            e.preventDefault();
+            stopSlideshow();
+            changeSlide(1);
+            startSlideshow();
+        });
+
+        initializeCarousel();
+        showSlide(0);
+        startSlideshow();
 
         updateCountdown();
     </script>
