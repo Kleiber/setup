@@ -14,8 +14,25 @@
             justify-content: center;
             align-items: center;
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f0f0;
             overflow: hidden;
+        }
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .layer.active {
+            opacity: 1;
+            z-index: 10;
+            pointer-events: auto;
         }
         #countdown {
             display: flex;
@@ -23,10 +40,7 @@
             align-items: center;
             width: 90vw;
             height: 50vh;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             z-index: 1;
         }
         .time-unit {
@@ -101,12 +115,6 @@
             border-left: 30px solid white;
             margin-left: 5px;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
         #confettiCanvas {
             position: fixed;
             top: 0;
@@ -117,12 +125,7 @@
             z-index: 1000;
         }
         .message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
-            display: none;
             z-index: 3;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
@@ -134,60 +137,134 @@
             font-size: 3vw;
             color: #333;
         }
+        .letter-container {
+            perspective: 1000px;
+            width: 80%;
+            max-width: 800px;
+            padding: 30px;
+        }
+        .letter {
+            font-family: 'Indie Flower', cursive;
+            background-color: #f9f2e3;
+            padding: 60px;
+            box-shadow: 
+                0 1px 1px rgba(0,0,0,0.15),
+                0 2px 2px rgba(0,0,0,0.15),
+                0 4px 4px rgba(0,0,0,0.15),
+                0 8px 8px rgba(0,0,0,0.15);
+            position: relative;
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+        }
+        .letter:hover {
+            transform: rotate(0deg);
+        }
+        .letter::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+        .header {
+            text-align: right;
+            margin-bottom: 40px;
+        }
+        .date {
+            font-style: italic;
+            color: #5a5a5a;
+            font-size: 1.1em;
+        }
+        .greeting, .closing {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+        @media (max-width: 768px) {
+            .letter-container {
+                width: 95%;
+                padding: 15px;
+            }
+            .letter {
+                padding: 30px;
+                font-size: 1em;
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <canvas id="confettiCanvas"></canvas>
-    <div id="countdown">
-        <div class="time-unit">
-            <div class="time-value" id="days">00</div>
-            <div class="time-label">Dias</div>
+    <div id="countdownLayer" class="layer active">
+        <div id="countdown">
+            <div class="time-unit">
+                <div class="time-value" id="days">00</div>
+                <div class="time-label">Dias</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Horas</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Min</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Seg</div>
+            </div>
         </div>
-        <div class="time-unit">
-            <div class="time-value" id="hours">00</div>
-            <div class="time-label">Horas</div>
+        <div id="playButton"></div>
+    </div>
+    <div id="messageLayer" class="layer">
+        <div id="anniversaryMessage" class="message">
+            <h1>Feliz Aniversario</h1>
         </div>
-        <div class="time-unit">
-            <div class="time-value" id="minutes">00</div>
-            <div class="time-label">Min</div>
+        <div id="introductionMessage" class="message">
+            <h1>Introducción</h1>
         </div>
-        <div class="time-unit">
-            <div class="time-value" id="seconds">00</div>
-            <div class="time-label">Seg</div>
+        <div id="mainMessage" class="letter-container">
+            <div class="letter">
+                <div class="header">
+                    <div class="date">September 22, 2024</div>
+                </div>
+                <p class="greeting">Dear [Recipient],</p>
+                <p>I hope this letter finds you well. I am writing to express my heartfelt appreciation for your recent support and guidance. Your wisdom and encouragement have been invaluable to me during these challenging times.</p>
+                <p>Your generosity of spirit and willingness to share your expertise have made a significant impact on my personal and professional growth. I am truly grateful for the time and effort you have invested in mentoring me.</p>
+                <p>As I move forward, I will carry the lessons you've taught me and strive to pay forward the kindness you've shown. Your influence will undoubtedly shape my future endeavors and decisions.</p>
+                <p class="closing">With sincere gratitude,</p>
+                <div class="signature">[Your Name]</div>
+            </div>
         </div>
-    </div>
-    <div id="playButton"></div>
-    <div id="anniversaryMessage" class="message">
-        <h1>Feliz Aniversario</h1>
-    </div>
-    <div id="introductionMessage" class="message">
-        <h1>Introducción</h1>
-    </div>
-    <div id="mainMessage" class="message">
-        <h1>Gracias por todo!</h1>
-    </div>
-    <div id="photoGallery" class="message">
-        <h1>Fotos</h1>
-    </div>
-    <div id="finalMessage" class="message">
-        <h1>Te Amo!</h1>
+        <div id="photoGallery" class="message">
+            <h1>Fotos</h1>
+        </div>
+        <div id="finalMessage" class="message">
+            <h1>Te Amo!</h1>
+        </div>
     </div>
 
     <audio id="audio" src="audio/audio1.mp3"></audio>
 
     <script>
-        const countdownElement = document.getElementById('countdown');
+        const countdownLayer = document.getElementById('countdownLayer');
+        const messageLayer = document.getElementById('messageLayer');
         const playButton = document.getElementById('playButton');
         const confettiCanvas = document.getElementById('confettiCanvas');
         const audio = document.getElementById('audio');
 
         const messages = [
-            { element: document.getElementById('anniversaryMessage'), duration: 5000, confetti: true },
-            { element: document.getElementById('introductionMessage'), duration: 5000, confetti: false },
-            { element: document.getElementById('mainMessage'), duration: 5000, confetti: true },
-            { element: document.getElementById('photoGallery'), duration: 5000, confetti: false },
-            { element: document.getElementById('finalMessage'), duration: 5000, confetti: true }
+            { element: document.getElementById('anniversaryMessage'), duration: 3000, confetti: true },
+            { element: document.getElementById('introductionMessage'), duration: 3000, confetti: false },
+            { element: document.getElementById('mainMessage'), duration: 3000, confetti: true },
+            { element: document.getElementById('photoGallery'), duration: 3000, confetti: false },
+            { element: document.getElementById('finalMessage'), duration: 3000, confetti: true }
         ];
 
         let confettiInterval;
@@ -240,13 +317,13 @@
 
             if (distance < 0) {
                 clearInterval(countdownTimer);
-                countdownElement.style.display = 'none';
+                document.getElementById('countdown').style.display = 'none';
                 playButton.style.display = 'flex';
                 startConfetti();
             }
         }
 
-        const targetDate = new Date("2024-09-22T06:13:00").getTime();
+        const targetDate = new Date("2024-09-23T01:36:00").getTime();
         const countdownTimer = setInterval(updateCountdown, 1000);
 
         function showMessage(index) {
@@ -262,6 +339,8 @@
         }
 
         playButton.addEventListener('click', function() {
+            countdownLayer.classList.remove('active');
+            messageLayer.classList.add('active');
             playButton.style.display = 'none';
             audio.play();
 
@@ -278,6 +357,8 @@
                     stopConfetti();
                     audio.pause();
                     audio.currentTime = 0;
+                    messageLayer.classList.remove('active');
+                    countdownLayer.classList.add('active');
                 }
             }
 
