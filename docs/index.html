@@ -24,6 +24,34 @@
             overflow: hidden;
         }
 
+        .bg-container {
+            min-height: 100%;
+            background-image: url('../../image.png');
+            background-repeat: repeat;
+            background-size: 626px 613px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .heart {
+            color: #e74c3c;
+            font-size: 5em;
+            margin: 30px 0;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .heart:hover {
+            transform: scale(1.1);
+        }
+
+        .exclamation {
+            color: #e74c3c;
+        }
+
         .layer {
             position: absolute;
             top: 0;
@@ -394,6 +422,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+    <div class="bg-container">
     <canvas id="confettiCanvas"></canvas>
     
     <div id="countdownLayer" class="layer active">
@@ -423,7 +452,8 @@
     <div id="messageLayer" class="layer">
         <div class="content-container">
             <div id="anniversaryMessage" class="message">
-                <h1>Feliz Aniversario</h1>
+                <h1>Feliz Aniversário<span class="exclamation">!!</span></h1>
+                <div class="heart">&#10084;</div>
             </div>
             <div id="introductionMessage" class="message">
                 <h1>Introducción</h1>
@@ -431,14 +461,15 @@
             <div id="mainMessage" class="letter-container">
                 <div class="letter">
                     <div class="header">
-                        <div class="date">September 22, 2024</div>
+                        <div class="date">Outubro 12, 2024</div>
                     </div>
-                    <p class="greeting">Dear [Recipient],</p>
-                    <p>I hope this letter finds you well. I am writing to express my heartfelt appreciation for your recent support and guidance. Your wisdom and encouragement have been invaluable to me during these challenging times.</p>
-                    <p>Your generosity of spirit and willingness to share your expertise have made a significant impact on my personal and professional growth. I am truly grateful for the time and effort you have invested in mentoring me.</p>
-                    <p>As I move forward, I will carry the lessons you've taught me and strive to pay forward the kindness you've shown. Your influence will undoubtedly shape my future endeavors and decisions.</p>
-                    <p class="closing">With sincere gratitude,</p>
-                    <div class="signature">[Your Name]</div>
+                    <p class="greeting">Meu amor querido,</p>
+                    <p>Hoje, ao celebrarmos nosso primeiro ano juntos, meu coração transborda de amor e gratidão. Este ano ao seu lado tem sido a mais bela jornada da minha vida, repleta de momentos mágicos e inesquecíveis.</p>
+                    <p>Lembro-me de cada sorriso, cada abraço e cada olhar que trocamos. Você trouxe luz aos meus dias, conforto às minhas noites e alegria a cada momento que compartilhamos. Sua presença na minha vida é um presente que agradeço todos os dias.</p>
+                    <p>Neste primeiro ano, construímos memórias preciosas, superamos desafios juntos e nosso amor só fez crescer. Você me inspira a ser uma pessoa melhor e me faz acreditar em um futuro brilhante ao seu lado.</p>
+                    <p>Que este seja apenas o primeiro de muitos anos que celebraremos juntos. Mal posso esperar para continuar escrevendo nossa história de amor, criando mais lembranças e sonhando com novos horizontes ao seu lado.</p>
+                    <p class="closing">Com todo meu amor e carinho,</p>
+                    <div class="signature">Seu Amor</div>
                 </div>
             </div>
             <div id="photoGallery">
@@ -457,6 +488,7 @@
     </div>
 
     <audio id="audio" src="audio/audio1.mp3"></audio>
+    </div>
 
     <script>
         const countdownLayer = document.getElementById('countdownLayer');
@@ -468,7 +500,7 @@
         const messages = [
             { element: document.getElementById('anniversaryMessage'), duration: 5000, confetti: true },
             { element: document.getElementById('introductionMessage'), duration: 5000, confetti: true },
-            { element: document.getElementById('mainMessage'), duration: 5000, confetti: true },
+            { element: document.getElementById('mainMessage'), duration: 20000, confetti: true },
             { element: document.getElementById('photoGallery'), duration: 100000, confetti: true },
             { element: document.getElementById('finalMessage'), duration: 5000, confetti: true }
         ];
@@ -529,7 +561,7 @@
             }
         }
 
-        const targetDate = new Date("2024-09-23T01:36:00").getTime();
+        const targetDate = new Date("2024-09-24T03:25:00").getTime();
         const countdownTimer = setInterval(updateCountdown, 1000);
 
         function showMessage(index) {
@@ -588,6 +620,14 @@
             "fotos/foto3.jpeg",
             "fotos/foto4.jpeg",
             "fotos/foto5.jpeg",
+            "fotos/foto6.jpeg",
+            "fotos/foto7.jpeg",
+            "fotos/foto8.jpeg",
+            "fotos/foto9.jpeg",
+            "fotos/foto10.jpeg",
+            "fotos/foto11.jpeg",
+            "fotos/foto12.jpeg",
+            "fotos/foto13.jpeg",
         ];
 
         const imageMessages = [
@@ -596,6 +636,14 @@
             "Our first vacation together. I've never laughed so much in my life!",
             "The day we moved in together. It was chaotic, but it felt so right.",
             "Last New Year's Eve. Here's to many more years of celebration and love.",
+            "Our first date. I was so nervous, but your smile put me at ease instantly.",
+            "Remember this sunset? It was the moment I realized I was falling in love with you.",
+            "Our first vacation together. I've never laughed so much in my life!",
+            "The day we moved in together. It was chaotic, but it felt so right.",
+            "Last New Year's Eve. Here's to many more years of celebration and love.",
+            "Our first date. I was so nervous, but your smile put me at ease instantly.",
+            "Remember this sunset? It was the moment I realized I was falling in love with you.",
+            "Our first vacation together. I've never laughed so much in my life!",
         ];
 
         let slideIndex = 0;
@@ -639,7 +687,7 @@
             indicators[slideIndex].classList.add("active");
 
             // Update the carousel message
-            document.getElementById('carousel-message').innerHTML = `<p>${imageMessages[slideIndex]}</p>`;
+            document.getElementById('carousel-message').innerHTML = `<div class="message"><p>${imageMessages[slideIndex]}</p></div>`;
         }
 
         function changeSlide(n) {
