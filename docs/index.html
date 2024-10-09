@@ -367,12 +367,12 @@
             }
             .letter {
                 padding: 30px;
-                font-size: 1em;
+                font-size: 0.95em;
             }
             .message {
                 padding: 20px;
                 max-width: 90%;
-                font-size: 0.9em;
+                font-size: 0.93em;
             }
             h1 {
                 font-size: 7vw;
@@ -752,7 +752,7 @@
             indicators[slideIndex].classList.add("active");
 
             // Update the carousel message
-            document.getElementById('carousel-message').innerHTML = `<div class="message"><p>${imageMessages[slideIndex]}</p></div>`;
+            document.getElementById('carousel-message').innerHTML = `<div class="message"><p><strong>${imageMessages[slideIndex]}</strong></p></div>`;
         }
 
         function changeSlide(n) {
